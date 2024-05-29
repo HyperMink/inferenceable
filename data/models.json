@@ -1,0 +1,41 @@
+[
+  {
+    "name": "Phi-3-Mini-4k",
+    "capabilities": {
+      "text": true
+    },
+    "model_path": "",
+    "model_origin": "https://huggingface.co/HyperMink/Phi-3-Mini/resolve/main/Phi-3-mini-4k-instruct.Q5_K_M.gguf?download=true",
+    "info": "Mighty small.",
+    "size": "2.82",
+    "license": "MIT",
+    "required": true
+  },
+  {
+    "name": "Llava-Vision-7B",
+    "capabilities": {
+      "text": true,
+      "vision": true
+    },
+    "model_path": "",
+    "mmproj_path": "",
+    "model_origin": "https://huggingface.co/HyperMink/LLaVA/resolve/main/llava-v1.5-7b-Q4_K.gguf?download=true",
+    "mmproj_origin": "https://huggingface.co/HyperMink/LLaVA/resolve/main/llava-v1.5-7b-mmproj-Q4_0.gguf?download=true",
+    "info": "A multimodal AI. Chat and generate text & stories from any image.",
+    "size": "4.08",
+    "license": "LLAMA 2 COMMUNITY LICENSE AGREEMENT",
+    "required": true
+  },
+  {
+    "name": "Hermes2-Pro-7B",
+    "capabilities": {
+      "text": true
+    },
+    "model_path": "",
+    "model_origin": "https://huggingface.co/NousResearch/Hermes-2-Pro-Mistral-7B-GGUF/resolve/main/Hermes-2-Pro-Mistral-7B.Q5_K_M.gguf?download=true",
+    "info": "Great for long conversations.",
+    "size": "5.13",
+    "license": "Apache 2.0",
+    "required": false
+  }
+]

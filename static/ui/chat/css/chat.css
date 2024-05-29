@@ -1,0 +1,373 @@
+/*
+ * The Apache License, Version 2.0
+ *
+ * Copyright 2024 Inferenceable, HyperMink
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+[v-cloak] { display: none }
+
+:root {
+  --background-color: #fdfdfd;
+}
+
+body {
+  background-color: var(--background-color);
+}
+
+nav {
+  width: 96%;
+  height: 4rem;
+}
+
+body>main {
+  padding-block: 0;
+}
+
+#app {
+  height: 100dvh;
+  position: relative;
+}
+
+details > summary {
+  margin-top: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #015887 !important;
+  background-color: #dee1e6;
+  padding: 10px 20px;
+  border-radius: 18px;
+}
+
+.icon img {
+  height: 25px;
+  padding: 2px;
+}
+
+.logo {
+  height:40px;
+  margin-bottom: -6px;
+}
+
+.chat-log {
+  height: calc(100% - 11rem);
+  padding: 0 8px 1rem;
+  overflow-y: auto;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.chat-actor {
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fde7c0;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+}
+
+.user-name {
+  margin-left: 10px;
+  color: #8191B5;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: .05rem;
+  text-transform: uppercase;
+}
+
+.chat-message {
+  font-size: 0.9rem;
+  margin: 0 30px 30px 35px;
+  min-height: 24px;
+}
+
+.chat-image {
+  margin: 0 0 20px 35px;
+  max-width: 80%;
+}
+
+.chat-image img {
+  border-radius: 8px;
+}
+
+.chat-file {
+  margin-top: 8px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #015887;
+}
+
+.user-message {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.stream-wait {
+  margin: 5px 0 30px 37px;
+}
+
+.userprompt {
+  border-radius: 12px;
+  background-color: #fff;
+  font-weight: 300;
+  font-size: 0.9rem;
+}
+
+.userprompt:focus {
+  --pico-box-shadow: 0;
+  --pico-border-color: #cfd5e2;
+}
+
+.userprompt::placeholder {
+  font-weight: 200;
+  color: #888;
+}
+
+.promptarea {
+  position: inherit;
+  bottom: 0;
+  width: 100%;
+  margin: 10px 0;
+  text-align: center;
+  height: 6.4rem;
+}
+
+.promptarea textarea {
+  padding-right: 4rem;
+  padding-top: 10px;
+  min-height: 4rem;
+  max-height: 14rem;
+  margin: 0;
+}
+
+.promptarea .attach-icon {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  background-image: url("/common/img/icon/attach-outline.svg");
+  background-size: cover;
+  opacity: 0.5;
+}
+
+.promptarea .attach-icon:hover {
+  opacity: 0.7;
+}
+
+.promptarea .abort-icon {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 27px;
+  height: 27px;
+  cursor: pointer;
+  background-image: url("/common/img/icon/pause-circle-outline.svg");
+  background-size: cover;
+  opacity: 0.5;
+}
+
+.promptarea .abort-icon:hover {
+  opacity: 0.7;
+}
+
+.promptarea .file-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #FCFCFD;
+  border-radius: 8px;
+  border-width: 0;
+  box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px,#D6D6E7 0 -3px 0 inset;
+  box-sizing: border-box;
+  color: #36395A;
+}
+
+.promptarea a {
+  text-decoration: none;
+}
+
+.file-container img {
+  max-width: 4rem;
+  max-height: 4rem;
+  border-radius: 8px;
+  padding: 3px;
+}
+
+.file-container > .file {
+  max-width: 8rem;
+  max-height: 4rem;
+  padding: 20px;
+  font-size: 0.8rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-container .close-icon {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  background-image: url("/common/img/icon/close-circle-outline.svg");
+  background-size: cover;
+}
+
+pre {
+  background-color: #000;
+}
+
+pre>code {
+  font-family: monospace;
+  font-size: 0.8rem;
+  white-space: pre;
+  color: #fff;
+}
+
+xsmall {
+  font-size: 0.8em;
+  color: #8191B5;
+}
+
+.system {
+  margin-top: 5px;
+}
+
+.system input {
+  width: auto;
+  max-width: 140px;
+  margin-bottom: 2px;
+  height: 20px;
+  background-color: inherit;
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px dashed #999;
+}
+
+.system input[type=range] {
+  height: 10px;
+  border: none;
+  padding: 0;
+}
+
+.system textarea {
+  margin-top: 5px;
+  background-color: var(--background-color);
+}
+
+.system h6 {
+  margin: 10px 0;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.send {
+  position: fixed;
+  bottom: 6.7rem;
+  left: 80%;
+  transform: translateX(-80%);
+  z-index: 9999;
+}
+
+.send img {
+  height: 46px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: padding 0.28s ease;
+}
+
+.send img:hover {
+  padding: 2px;
+}
+
+.more {
+  position: fixed;
+  bottom: 124px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+}
+
+.more img {
+  height: 40px;
+  padding: 2px;
+  cursor: pointer;
+  border-radius: 50%;
+  background-color: #fff;
+  transition: padding 0.28s ease;
+}
+
+.more img:hover {
+  padding: 3px;
+}
+
+.active {
+  opacity: 1;
+  max-height: 1000px;
+  transition: all 0.6s ease;
+}
+
+.inactive {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.02s ease;
+}
+
+.loader-model {
+  height: 10px;
+  aspect-ratio: 6;
+  --c: #0000 64%,#ffbd59 66% 98%,#0000 101%;
+  background:
+    radial-gradient(35% 146% at 50% 159%,var(--c)) 0 0,
+    radial-gradient(35% 146% at 50% -59%,var(--c)) 25% 100%;
+  background-size: calc(100%/3) 50%;
+  background-repeat: repeat-x;
+  animation: l1 1s infinite linear;
+}
+@keyframes l1{
+  to { background-position: 50% 0,75% 100% }
+}
+
+.loader-dot {
+  width: 10px;
+  height: 10px;
+  background-color: #ddd;
+  border-radius: 50%;
+  animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% {transform: scale(1);}
+  50% {transform: scale(1.5);}
+  100% {transform: scale(1);}
+}

@@ -1,0 +1,31 @@
+{
+  "name": "Inferenceable",
+  "version": "1.0.0",
+  "description": "High performance inference server",
+  "type": "module",
+  "main": "inferenceable.js",
+  "scripts": {
+    "start": "node inferenceable.js",
+    "test": "mocha test/api.test.js"
+  },
+  "author": "https://inferenceable.com",
+  "license": "Apache 2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HyperMink/inferenceable.git"
+  },
+  "dependencies": {
+    "easydl": "^1.2.0",
+    "express": "^4.19.2",
+    "helmet": "^7.1.0",
+    "passport": "^0.7.0",
+    "passport-http": "^0.3.0",
+    "pino": "^9.1.0",
+    "rate-limiter-flexible": "^5.0.3"
+  },
+  "devDependencies": {
+    "chai": "^5.1.1",
+    "mocha": "^10.4.0",
+    "supertest": "^7.0.0"
+  }
+}
