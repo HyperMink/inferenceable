@@ -52,14 +52,6 @@ class Config {
     this.inferVisionBinPath = process.env.INFER_VISION_BIN_PATH || this.inferTextBinPath;
     this.inferEmbeddingBinPath = process.env.INFER_EMBEDDING_BIN_PATH || this.inferTextBinPath;
 
-    // Note: If you are exporting a custom llama.cpp binary, make sure to give it a different name
-    // if it's not an αcτµαlly pδrταblε εxεcµταblε.
-    if (this.platform === 'win32' && this.inferTextBinPath.endsWith('inferenceable_bin')) {
-      // simply rename to .exe if running on Windows
-      fs.renameSync(this.inferTextBinPath, `${this.inferTextBinPath}.exe`);
-      this.inferTextBinPath = `${this.inferTextBinPath}.exe`;
-    }
-
     /******************************************************************************************
       API
     *******************************************************************************************/
@@ -124,7 +116,7 @@ class Config {
       For custom CSP:
       export INFER_AUTH_CSP=./security/csp/default.js
     *******************************************************************************************/
-    this.CSP = process.env.INFER_CSP || path.join(__dirname, 'server', 'security', 'csp', 'default.js');
+    this.CSP = process.env.INFER_CSP || './security/csp/default.js';
 
     /******************************************************************************************
       Rate limiter
@@ -133,7 +125,7 @@ class Config {
       For custom rate limiter:
       export INFER_RATE_LIMITER=./security/rate/memory.js
     *******************************************************************************************/
-    this.rateLimiter = process.env.INFER_RATE_LIMITER || path.join(__dirname, 'server', 'security', 'rate', 'memory.js');
+    this.rateLimiter = process.env.INFER_RATE_LIMITER || './security/rate/memory.js';
 
     /******************************************************************************************
       Authentication strategies.

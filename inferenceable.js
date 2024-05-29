@@ -17,6 +17,7 @@
  */
 
 import * as fs from 'fs';
+import path from 'path';
 import pino from 'pino';
 import EasyDl from 'easydl';
 import config from './config.js'
@@ -65,7 +66,7 @@ async function downloadFile(source, destination) {
   let success = false;
   try {
     logger.info(`Download source ${source}`)
-    const destParent = destination.substring(0, destination.lastIndexOf('/'));
+    const destParent = path.dirname(destination);
     mkPath(destParent) // make sure the parent exists
     const downloader = new EasyDl(source, destination, {existBehavior: 'overwrite'})
     const downloaded = await downloader.on("progress", ({ details, total }) => {

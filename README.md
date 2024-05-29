@@ -13,8 +13,6 @@
 
 - [X] Linux
 - [X] macOS
-- [X] Windows
-
 
 ## Installation
 
@@ -71,14 +69,14 @@ export INFER_UI_PATH=/path/to/custom/ui
 ```
 
 * **Vision example**
-  
+
   ![Screenshot of a Inferenceable vision example.](static/assets/screenshots/inferenceable-vision-screenshot.jpg)
 
 
 * **Chat example**
-  
+
   ![Screenshot of a Inferenceable chat example.](static/assets/screenshots/inferenceable-chat-screenshot.jpg)
-  
+
 
 ### Models
 
@@ -90,7 +88,7 @@ export INFER_MODEL_CONFIG=my/models.json
 
 ### Grammar
 
-Default grammar files are available in [data/grammar/](data/grammar/). You can provide any custom grammar files either by adding them to data/grammar or by setting the environment variable `INFER_GRAMMAR_FILES`. 
+Default grammar files are available in [data/grammar/](data/grammar/). You can provide any custom grammar files either by adding them to data/grammar or by setting the environment variable `INFER_GRAMMAR_FILES`.
 
 Grammar files needs to be in [GBNF format](https://github.com/ggerganov/llama.cpp/blob/master/grammars/README.md) which is an extension of [Bakus-Naur Form (BNF)](https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form).
 
