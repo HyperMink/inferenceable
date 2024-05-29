@@ -1,0 +1,9 @@
+{
+  "n_predict": "--n-predict",
+  "temperature": "--temp",
+  "mirostat": "--mirostat",
+  "mirostat_lr": "--mirostat-lr",
+  "mirostat_ent": "--mirostat-ent",
+  "repeat_penalty": "--repeat-penalty",
+  "repeat_last_n": "--repeat-last-n"
+}

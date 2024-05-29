@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--
+        The Apache License, Version 2.0
+
+        Copyright 2024 Inferenceable, HyperMink
+
+        Licensed under the Apache License, Version 2.0 (the "License");
+        you may not use this file except in compliance with the License.
+        You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+        Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an "AS IS" BASIS,
+        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        See the License for the specific language governing permissions and
+        limitations under the License.
+    -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/jpeg" href="/common/img/logo/hypermink-assistant-rounded.png">
+    <title>Inferenceable | Vision, by HyperMink</title>
+    <link rel="stylesheet" href="/common/css/common.css">
+    <link rel="stylesheet" href="/vision/css/vision.css">
+    <script src="/common/js/vue.global.prod.js"></script>
+  </head>
+  <body>
+    <div class="container" id="app" v-cloak>
+      <div class="content">
+        <div class="logo-type"><img src="/common/img/logo/inferenceable-type.png"></div>
+        <h1>Vision</h1>
+        <p class="info">
+          Choose or snap a picture to infer
+        </p>
+        <div class="image-container">
+          <div v-if="file.data">
+            <img class="image" :src="file.data" alt="Selected Image">
+            <span class="close-icon" @click="removeFile" @keydown.enter.prevent="removeFile" tabindex="2"></span>
+          </div>
+          <div v-else @click="openFileInput" @keydown.enter.prevent="openFileInput" @keydown.space.prevent="openFileInput">
+            <img class="icon" src="/common/img/icon/image-outline.svg">
+          </div>
+          <div class="send" v-if="userprompt && file.data" @click="sendMessage"><img src="/common/img/icon/arrow-up-circle.svg"></div>
+        </div>
+        <input ref="promptbox" v-model="userprompt" @keydown.enter.prevent="sendMessage" type="text" placeholder="Ask any Question">
+      </div>
+      <canvas ref="canvas"></canvas>
+      <input ref="fileInput" type="file" accept="image/*" style="display: none" @change="handleFileInputChange">
+      <div v-if="showAnswer" class="answer-container">
+        <div class="answer">
+          <img class="image" :src="file.data" alt="Selected Image">
+          <h2 class="title">{{userprompt}}</h2>
+          <div v-if="fetching"><div class="loader"></div></div>
+          <div>{{answer}}</div>
+          <p v-if="isShareable()">
+            <a class="button" @click="share">Share</a>
+          </p>
+        </div>
+        <span class="close-icon" @click="abortRequest" @keydown.enter.prevent="removeFile" tabindex="2"></span>
+      </div>
+    </div>
+
+    <script src="/common/js/purify.min.js"></script>
+    <script src="/common/js/marked.min.js"></script>
+    <script src="/vision/js/vision.js"></script>
+
+  </body>
+</html>

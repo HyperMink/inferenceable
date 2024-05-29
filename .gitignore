@@ -1,3 +1,9 @@
+# Local and downloaded binaries
+data/models
+
+# macOS
+.DS_Store
+
 # Logs
 logs
 *.log

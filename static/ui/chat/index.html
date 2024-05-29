@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!--
+        The Apache License, Version 2.0
+
+        Copyright 2024 Inferenceable, HyperMink
+
+        Licensed under the Apache License, Version 2.0 (the "License");
+        you may not use this file except in compliance with the License.
+        You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+        Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an "AS IS" BASIS,
+        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        See the License for the specific language governing permissions and
+        limitations under the License.
+    -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Inferenceable | Chat, by HyperMink</title>
+    <link rel="icon" type="image/jpeg" href="/common/img/logo/hypermink-assistant-rounded.png">
+    <meta name="color-scheme" content="light dark" />
+    <link rel="stylesheet" href="/common/css/pico.min.css">
+    <link rel="stylesheet" href="/chat/css/chat.css">
+    <script src="/common/js/vue.global.prod.js"></script>
+  </head>
+  <body>
+    <main class="container" id="app" v-cloak>
+      <nav>
+        <ul>
+          <li><img class="logo" src="/common/img/logo/inferenceable-type.png"/></li>
+        </ul>
+        <ul>
+          <li><a @click="selectMenu('help')" @keydown.enter.prevent="selectMenu('help')" class="secondary icon clickable" tabindex="101"><img src="/common/img/icon/information-outline.svg"/></a></li>
+          <li><a @click="selectMenu('model')" @keydown.enter.prevent="selectMenu('model')" class="secondary icon clickable" tabindex="102"><img src="/common/img/icon/options-outline.svg"/></a></li>
+          <li><a @click="selectMenu('template')" @keydown.enter.prevent="selectMenu('template')" class="secondary icon clickable" tabindex="103"><img src="/common/img/icon/code-slash-outline.svg"/></a></li>
+        </ul>
+      </nav>
+      <div class="chat-log" ref="chatlog" @scroll="handleChatScroll">
+        <div v-if="!hide">
+          <div v-for="(item, index) in chatLog" :key="index">
+            <div class="chat-actor">
+                <div class="avatar">
+                  <img v-if="item.actor == 'ai'" :src="templateConfig.actors[item.actor].avatar" alt="Actor's avatar">
+                  <svg v-else width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="#000000"/><text x="50%" y="53%" dominant-baseline="middle" text-anchor="middle" fill="#ffffff" font-size="12">{{initials}}</text></svg>
+                </div>
+                <div class="user-name">{{templateConfig.actors[item.actor].name}}</div>
+            </div>
+            <div v-if="item.image" class="chat-image"><img :src="item.image"></div>
+            <div v-if="item.text && item.actor == 'user'" class="chat-message user-message" v-html="item.text"></div>
+            <div v-if="item.text && item.actor == 'ai'" class="chat-message" v-html="transformAndSafeRender(item.text)"></div>
+          </div>
+          <div v-if="fetching"><div class="stream-wait loader-dot"></div></div>
+          <div :class="!api.available ? 'active' : 'inactive'">
+            <div class="chat-actor">
+                <div class="avatar">
+                  <img :src="templateConfig.actors.ai.avatar" alt="AI Avatar">
+                </div>
+                <div class="user-name">{{templateConfig.actors.ai.name}}</div>
+            </div>
+            <div class="chat-message">
+              <p>I am loading 🤔, give me a moment...</p>
+              <div class="loader-model"></div>
+            </div>
+          </div>
+          <div :class="section.help ? 'active' : 'inactive'">
+            <div class="chat-actor">
+                <div class="avatar">
+                  <img :src="templateConfig.actors.ai.avatar" alt="AI Avatar">
+                </div>
+                <div class="user-name">{{templateConfig.actors.ai.name}}</div>
+            </div>
+            <article class="chat-message system">
+              <p>
+                I'm here to help with your questions and ideas, especially in STEM, history, and coding. But I can assist with anything! You can also use me to learn how to interact with AI in a secure space.
+              </p>
+              <p>
+                Want to customize me? Just message <code>/template</code> or <code>/model</code>. Or message <code>/save</code> to save your changes.
+              </p>
+              <p>
+                Use <kbd>Ctrl + 0</kbd> to hide this chat from others.
+              </p>
+              <p>
+                <cite>- Your chat is always private.</cite>
+              </p>
+            </article>
+          </div>
+          <div :class="section.template ? 'active' : 'inactive'">
+            <div class="chat-actor">
+                <div class="avatar">
+                  <img :src="templateConfig.actors.ai.avatar" alt="AI Avatar">
+                </div>
+                <div class="user-name">{{templateConfig.actors.ai.name}}</div>
+            </div>
+            <article class="chat-message system">
+              <p>
+                Set my name as <input type="text" v-model="templateConfig.actors.ai.name" name="ainame" aria-label="AI name" tabindex="11" />,
+                your name as <input type="text" v-model="templateConfig.actors.user.name" name="username" aria-label="User name" tabindex="12" />,
+                and choose how many characters from our chat history I should remember <input type="number" v-model.number="templateConfig.chatLogMemorySize" name="chatLogMemorySize" aria-label="Chat memory" tabindex="13" />.
+              </p>
+              <p>
+                You can also update the message template for better communication. Here <cite>[memory]</cite> sends part of our chat history so I understand the context.
+                <textarea v-model="templateConfig.template" name="template" aria-label="Chat template" rows="6" tabindex="14"></textarea>
+              </p>
+            </article>
+          </div>
+          <div :class="section.model ? 'active' : 'inactive'">
+            <div class="chat-actor">
+                <div class="avatar">
+                  <img :src="templateConfig.actors.ai.avatar" alt="AI Avatar">
+                </div>
+                <div class="user-name">{{templateConfig.actors.ai.name}}</div>
+            </div>
+            <article class="chat-message system">
+              <p>
+                I'm currently set to reply using around <input type="number" v-model.number="llmUserConfig.n_predict" name="n_predict" aria-label="Max tokens" tabindex="11" /> tokens, which translates to about {{tokenChars}} characters. My temperature is adjusted to <input type="range" v-model.number="llmUserConfig.temperature" min="0" max="1" step="0.1" tabindex="12" /> {{llmUserConfig.temperature}} ({{temperatureDisplay}}).
+              </p>
+              <p>
+                You can fine-tune my responses further with the advanced text sampling method. Adjust the Mirostat setting <input type="range" v-model.number="llmUserConfig.mirostat" min="0" max="2" step="1" tabindex="13" /> (currently set to {{llmUserConfig.mirostat}}) to manage perplexity during text generation. You can also tweak the learning rate <input type="number" v-model.number="llmUserConfig.mirostat_lr" name="mirostat_lr" aria-label="Mirostat learning rate" tabindex="14" /> and target entropy <input type="number" v-model.number="llmUserConfig.mirostat_ent" name="mirostat_ent" aria-label="Mirostat target entropy" tabindex="15" />.
+              </p>
+            </article>
+          </div>
+          <div :class="section.save ? 'active' : 'inactive'">
+            <div class="chat-actor">
+                <div class="avatar">
+                  <img :src="templateConfig.actors.ai.avatar" alt="AI Avatar">
+                </div>
+                <div class="user-name">{{templateConfig.actors.ai.name}}</div>
+            </div>
+            <div class="chat-message">
+              <p>
+                Saved ❤
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="promptarea">
+        <textarea v-if="hide" class="userprompt" placeholder="Message HyperMink..." aria-label="HyperMink Chat" disabled></textarea>
+        <textarea v-else ref="promptbox" autofocus v-model="userprompt" tabindex="1" @keydown.enter.prevent="sendMessage" class="userprompt" placeholder="Message HyperMink..." aria-label="HyperMink Chat"></textarea>
+        <div v-if="!hide">
+          <input ref="fileInput" type="file" :accept="hasVision ? '.csv,text/plain,image/*,application/pdf' : '.csv,text/plain,application/pdf'" style="display: none" @change="handleFileInputChange">
+          <div v-if="hasImage && !streaming" class="file-container">
+            <div v-if="file.data">
+              <canvas ref="canvas" style="display: none;"></canvas>
+              <img :src="file.data" alt="Selected Image">
+              <span class="close-icon" @click="removeFile" @keydown.enter.prevent="removeFile" tabindex="2"></span>
+            </div>
+          </div>
+          <div v-if="hasFile && !streaming" class="file-container">
+            <div class="file">{{file.name}}</div>
+            <span class="close-icon" @click="removeFile" @keydown.enter.prevent="removeFile" tabindex="2"></span>
+          </div>
+          <span v-if="streaming" class="abort-icon" @click="abortRequest" @keydown.enter.prevent="abortRequest" @keydown.space.prevent="abortRequest" tabindex="2"></span>
+          <span v-if="!streaming && !hasFile && !hasImage" class="attach-icon" @click="openFileInput" @keydown.enter.prevent="openFileInput" @keydown.space.prevent="openFileInput" tabindex="2"></span>
+        </div>
+        <div><xsmall>Message <a @click="selectMenu('help')" @keydown.enter.prevent="selectMenu('help')" class="clickable" tabindex="3">/help</a> for more</xsmall></div>
+      </div>
+      <div class="more" v-if="scrolledUp && hasNewContent"><img @click="scrollDown()" src="/common/img/icon/arrow-down-circle-outline.svg"></div>
+      <div class="send" v-if="userprompt"><img @click="sendMessage" src="/common/img/icon/arrow-up-circle.svg"></div>
+    </main>
+    <script type="module" src="/common/js/pdf/pdf.mjs"></script>
+    <script src="/common/js/purify.min.js"></script>
+    <script src="/common/js/marked.min.js"></script>
+    <script src="/chat/js/chat.js"></script>
+  </body>
+</html>
