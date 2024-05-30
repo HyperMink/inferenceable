@@ -77,6 +77,9 @@ export INFER_UI_PATH=/path/to/custom/ui
 
   ![Screenshot of a Inferenceable chat example.](static/assets/screenshots/inferenceable-chat-screenshot.jpg)
 
+* **Timeless**
+
+  A [lyrical clock](http://localhost:3000/timeless) that tells the time in poem.
 
 ### Models
 
