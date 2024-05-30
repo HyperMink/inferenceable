@@ -43,7 +43,7 @@ const app = createApp({
           ai: {name: 'HyperMink', avatar: '/chat/img/logo/hypermink-assistant.png'}
         },
         chatLogMemorySize: 20000, // How much chat history we wanna send back with each prompt
-        template: '<|user|>\nWho are you?<|end|>\n<|assistant|>\nNice to meet you too, I am HyperMink, your personal AI assistant, I am here to answer all your questions<|end|>\n<|user|>\nWow! thank you, lets start then<|end|>\n<|assistant|>\n[memory]\nHyperMink: ',
+        template: '<|user|>\nWho are you?<|end|>\n<|assistant|>\nNice to meet you, I am HyperMink, your personal AI assistant, I am here to answer all your questions<|end|>\n<|user|>\nWow! thank you, lets start then<|end|>\n<|assistant|>\n[memory]\nHyperMink: ',
       },
       llmUserConfig: {
         n_predict: 2000,

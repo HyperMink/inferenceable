@@ -1,0 +1,18 @@
+body {
+  background-color: #fdfdfd;
+}
+h1 {
+  font-size: 1.8rem;
+}
+.content {
+  margin-top: -4rem;
+}
+.share {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  opacity: 0.3;
+}
+.share:hover {
+  opacity: 0.8;
+}
